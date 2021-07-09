@@ -1,0 +1,91 @@
+-- Created by Vertabelo (http://vertabelo.com)
+-- Last modification date: 2021-07-05 13:09:33.147
+
+-- tables
+-- Table: G01_ASIGNATURA
+CREATE TABLE G01_ASIGNATURA (
+    tipo_asig char(2)  NOT NULL,
+    cod_asig int  NOT NULL,
+    nombre_asig varchar(40)  NOT NULL,
+    cant_hs_t int  NOT NULL,
+    cant_hs_p int  NOT NULL,
+    cantidad_prof_simple int NOT NULL,
+    cantidad_prof_exclusivo int NOT NULL,
+    CONSTRAINT PK_GR1_ASIGNATURA PRIMARY KEY (tipo_asig,cod_asig)
+);
+
+-- Table: G01_ASIGNATURA_PROFESOR
+CREATE TABLE G01_ASIGNATURA_PROFESOR (
+    dni int  NOT NULL,
+    tipo_asig char(2)  NOT NULL,
+    cod_asig int  NOT NULL,
+    cuatrimestre int  NOT NULL,
+    cantidad_horas int  NOT NULL,
+    activo boolean NOT NULL,
+    CONSTRAINT PK_GR1_ASIGNATURA_PROFESOR PRIMARY KEY (dni,tipo_asig,cod_asig)
+);
+
+-- Table: G01_PROFESOR
+CREATE TABLE G01_PROFESOR (
+    dni int  NOT NULL,
+    apellido varchar(50)  NOT NULL,
+    nombre varchar(30)  NOT NULL,
+    titulo varchar(30)  NULL,
+    departamento int  NOT NULL,
+    tipo_prof int  NOT NULL,
+    CONSTRAINT PK_GR1_PROFESOR PRIMARY KEY (dni)
+);
+
+-- Table: G01_PROF_EXCLUSIVO
+CREATE TABLE G01_PROF_EXCLUSIVO (
+    dni int  NOT NULL,
+    proy_investig varchar(20)  NOT NULL,
+    CONSTRAINT PK_GR1_PROF_EXCLUSIVO PRIMARY KEY (dni)
+);
+
+-- Table: G01_PROF_SIMPLE
+CREATE TABLE G01_PROF_SIMPLE (
+    dni int  NOT NULL,
+    perfil varchar(120)  NOT NULL,
+    CONSTRAINT PK_GR1_PROF_SIMPLE PRIMARY KEY (dni)
+);
+
+-- foreign keys
+-- Reference: FK_G01_ASIGNATURA_PROFESOR_ASIGNATURA (table: G01_ASIGNATURA_PROFESOR)
+ALTER TABLE G01_ASIGNATURA_PROFESOR ADD CONSTRAINT FK_G01_ASIGNATURA_PROFESOR_ASIGNATURA
+    FOREIGN KEY (tipo_asig, cod_asig)
+    REFERENCES G01_ASIGNATURA (tipo_asig, cod_asig)
+    ON DELETE  CASCADE  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: FK_G01_ASIGNATURA_PROFESOR_PROFESOR (table: G01_ASIGNATURA_PROFESOR)
+ALTER TABLE G01_ASIGNATURA_PROFESOR ADD CONSTRAINT FK_G01_ASIGNATURA_PROFESOR_PROFESOR
+    FOREIGN KEY (dni)
+    REFERENCES G01_PROFESOR (dni)
+    ON DELETE  CASCADE  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: FK_G01_PROF_EXCLUSIVO_PROFESOR (table: G01_PROF_EXCLUSIVO)
+ALTER TABLE G01_PROF_EXCLUSIVO ADD CONSTRAINT FK_G01_PROF_EXCLUSIVO_PROFESOR
+    FOREIGN KEY (dni)
+    REFERENCES G01_PROFESOR (dni)
+    ON DELETE  CASCADE  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: FK_G01_PROF_SIMPLE_PROFESOR (table: G01_PROF_SIMPLE)
+ALTER TABLE G01_PROF_SIMPLE ADD CONSTRAINT FK_G01_PROF_SIMPLE_PROFESOR
+    FOREIGN KEY (dni)
+    REFERENCES G01_PROFESOR (dni)
+    ON DELETE  CASCADE  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- End of file.
+
